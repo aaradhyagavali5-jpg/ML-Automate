@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder,OrdinalEncoder,StandardScaler
 import numpy as np
@@ -55,14 +56,23 @@ while True:
                 break
             elif encoder=='all':
                 column=input('Enter the column you want to labelencode:').split(',')
-                le=LabelEncoder()
-                for col in column:
-                    df[col]=le.fit_transform(df[col])
+                if column[0]=="no":
+                     continue
+                else:
+                     le=LabelEncoder()
+                     for col in column:
+                        df[col]=le.fit_transform(df[col])
                 column=input('Enter the column you want to ordinalencode:').split(',')
-                oe=OrdinalEncoder()
-                df[column]=oe.fit_transform(df[column])     
+                if column[0].strip()=="no":
+                     continue
+                else:
+                    oe=OrdinalEncoder()
+                    df[column]=oe.fit_transform(df[column])     
                 column=input('Enter the column you want to onehotencode:').split(',')
-                df=pd.get_dummies(df,columns=column)  
+                if column[0].strip()=="no":
+                     continue
+                else:
+                    df=pd.get_dummies(df,columns=column)  
                 break
             else:
                 print('Invalid encoder')
@@ -96,10 +106,7 @@ while True:
             model=DecisionTreeRegressor()
             model.fit(x_train,y_train)
             y_pred=model.predict(x_test)
-            print(f"Accuracy Score: {accuracy_score(y_test, y_pred)}")
-            print(f"Precision Score: {precision_score(y_test, y_pred)}")
-            print(f"Recall Score: {recall_score(y_test, y_pred)}")
-            print(f"F1 Score: {f1_score(y_test, y_pred)}")
+            print(f"classification report: {classification_report(y_test, y_pred)}")
             break
 
 
