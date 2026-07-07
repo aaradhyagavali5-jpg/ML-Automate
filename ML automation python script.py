@@ -3,6 +3,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder,OrdinalEncoder,StandardScaler
 import numpy as np
+import matplotlib.pyplot as plt
 print('Welcome to Machine Learning Automated version for Regression and Classification')
 dataset=input('Enter the dataset you want to use(path):')
 orignal=pd.read_csv(f'{dataset}')
@@ -32,7 +33,7 @@ else:
 rop=input(' you want to fill null values in categorical columns (yes/No):').lower()        
 if rop=='yes':
     cols2=input("Enter the columns you want to fill with mode for categorical columns only (comma separated):").split(',')
-    df[cols2]=df[cols2].fillna(df[cols2].mode()[0])
+    df[cols2]=df[cols2].fillna(df[cols2].mode().iloc[0])
 else:
     print("Ok")
 
@@ -99,6 +100,12 @@ while True:
             print(f"Mean Absolute Error: {mean_absolute_error(y_test, y_pred)}")
             print(f"Root Mean Squared Error: {np.sqrt(mean_squared_error(y_test, y_pred))}")
             print(f"R^2 Score: {r2_score(y_test, y_pred)}")
+            plt.scatter(y_test,y_pred,marker='o',Color="green")
+            plt.plot([min(y_test),max(y_test)],[min(y_test),max(y_test)],linestyle="--",color="red")
+            plt.title('Evalution of model')
+            plt.xlabel(f"{target}(y_test)")
+            plt.ylabel(f"{target}(y_pred)")
+            plt.show()
             break
         elif model=='decisiontrees':
             from sklearn.tree import DecisionTreeRegressor
